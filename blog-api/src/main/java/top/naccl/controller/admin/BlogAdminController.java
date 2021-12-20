@@ -2,6 +2,7 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ import java.util.Map;
  * @Author: Naccl
  * @Date: 2020-07-29
  */
+@Api(tags = "博客文章后台管理")
 @RestController()
 @RequestMapping("/admin")
 public class BlogAdminController {

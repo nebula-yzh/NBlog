@@ -1,5 +1,6 @@
-package top.naccl.controller;
+package top.naccl.controller.user;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @Date: 2020-08-12
  */
 @RestController
+@Api(tags = "博客归档")
 public class ArchiveController {
 	@Autowired
 	BlogService blogService;

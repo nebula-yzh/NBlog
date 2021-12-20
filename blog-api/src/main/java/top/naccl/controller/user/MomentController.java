@@ -1,4 +1,4 @@
-package top.naccl.controller;
+package top.naccl.controller.user;
 
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

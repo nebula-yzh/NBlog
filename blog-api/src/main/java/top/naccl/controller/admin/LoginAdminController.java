@@ -1,5 +1,6 @@
 package top.naccl.controller.admin;
 
+import io.swagger.annotations.Api;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ import java.util.Map;
  * @Author: Nebula
  * @Date: 2021-10-03
  */
-
+@Api(tags = "后台登陆")
 @RestController
 @RequestMapping("/admin")
 public class LoginAdminController {

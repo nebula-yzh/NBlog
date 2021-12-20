@@ -1,4 +1,4 @@
-package top.naccl.controller;
+package top.naccl.controller.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -46,7 +46,6 @@ public class BlogController {
      * @return
      */
     @ApiOperation(value = "访问博客页面")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "pageNum", value = "请求页数", defaultValue = "1", required = true, dataType = "Integer")})
     @VisitLogger(behavior = "访问页面", content = "首页")
     @GetMapping("/blogs")
     public Result blogs(@RequestParam(defaultValue = "1") Integer pageNum) {
@@ -62,10 +61,6 @@ public class BlogController {
      * @return
      */
     @ApiOperation(value = "根据id获取博客详情")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "id", value = "请求id", required = true, dataType = "Long"),
-            @ApiImplicitParam(paramType = "header", name = "jwt", value = "请求jwt", required = true, dataType = "String")
-    })
     @VisitLogger(behavior = "查看博客")
     @GetMapping("/blog")
     public Result getBlog(@RequestParam Long id,

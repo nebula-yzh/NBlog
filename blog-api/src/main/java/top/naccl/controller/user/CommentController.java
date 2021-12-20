@@ -1,7 +1,8 @@
-package top.naccl.controller;
+package top.naccl.controller.user;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
@@ -41,6 +42,7 @@ import java.util.Map;
  * @Date: 2020-08-15
  */
 @RestController
+@Api(tags = "博客评论")
 public class CommentController {
 	@Autowired
 	CommentService commentService;

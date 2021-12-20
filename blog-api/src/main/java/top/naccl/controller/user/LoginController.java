@@ -1,4 +1,4 @@
-package top.naccl.controller;
+package top.naccl.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
