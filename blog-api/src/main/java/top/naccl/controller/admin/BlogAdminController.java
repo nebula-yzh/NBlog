@@ -36,7 +36,7 @@ import java.util.Map;
  * @Author: Naccl
  * @Date: 2020-07-29
  */
-@RestController
+@RestController()
 @RequestMapping("/admin")
 public class BlogAdminController {
 	@Autowired

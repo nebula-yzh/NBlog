@@ -34,7 +34,7 @@ public class OperationLogAspect {
 	ThreadLocal<Long> currentTime = new ThreadLocal<>();
 
 	/**
-	 * 配置切入点
+	 * 配置切入点，通过注解切入
 	 */
 	@Pointcut("@annotation(operationLogger)")
 	public void logPointcut(OperationLogger operationLogger) {

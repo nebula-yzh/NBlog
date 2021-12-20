@@ -23,7 +23,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @Description: Markdown转换
+ * @Description:
+ * Markdown转换
+ * 将存入数据库的markdown形式的内容转换成HTML显示在前端
  * @Author: Naccl
  * @Date: 2020-04-29
  */
@@ -98,6 +100,6 @@ public class MarkdownUtils {
 
 
 	public static void main(String[] args) {
-		System.out.println(markdownToHtmlExtensions(""));
+		System.out.println(markdownToHtmlExtensions("**2**"));
 	}
 }

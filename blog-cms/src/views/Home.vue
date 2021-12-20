@@ -4,7 +4,7 @@
 		<el-header>
 			<div class="title">
 				<img src="~assets/img/logo.png" alt="" height="60">
-				<span>NBlog 博客后台管理</span>
+				<span>NebulaBlog 博客后台管理</span>
 			</div>
 			<el-dropdown trigger="click" class="user" v-if="user" @command="logout">
 				<div class="el-dropdown-link">

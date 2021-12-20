@@ -32,6 +32,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
 	/**
 	 * 项目启动时，初始化定时器
+	 * PostConstruct属于java的注解
 	 */
 	@PostConstruct
 	public void init() {

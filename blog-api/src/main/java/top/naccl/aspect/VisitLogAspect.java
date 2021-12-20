@@ -47,7 +47,7 @@ public class VisitLogAspect {
 	ThreadLocal<Long> currentTime = new ThreadLocal<>();
 
 	/**
-	 * 配置切入点
+	 * 配置切入点，通过注解切入
 	 */
 	@Pointcut("@annotation(visitLogger)")
 	public void logPointcut(VisitLogger visitLogger) {
@@ -62,8 +62,12 @@ public class VisitLogAspect {
 	 */
 	@Around("logPointcut(visitLogger)")
 	public Object logAround(ProceedingJoinPoint joinPoint, VisitLogger visitLogger) throws Throwable {
+		//执行方法之前
 		currentTime.set(System.currentTimeMillis());
+		//执行增强的方法（aop注解的方法）
 		Object result = joinPoint.proceed();
+		//执行方法后
+		//执行所用的时间
 		int times = (int) (System.currentTimeMillis() - currentTime.get());
 		currentTime.remove();
 		//获取请求对象
@@ -115,7 +119,8 @@ public class VisitLogAspect {
 	private String saveUUID(HttpServletRequest request) {
 		//获取响应对象
 		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-		//获取当前时间戳，精确到小时，防刷访客数据
+		//获取当前时间戳，只精确到小时，防刷uv访客数据
+		//表示在当前一个小时，尽管你删除了localstorage中的uuid，也会生成同一个，无法刷访客记录
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
@@ -157,6 +162,7 @@ public class VisitLogAspect {
 		String method = request.getMethod();
 		String behavior = visitLogger.behavior();
 		String content = visitLogger.content();
+		//获取请求的ip地址
 		String ip = IpAddressUtils.getIpAddress(request);
 		String userAgent = request.getHeader("User-Agent");
 		Map<String, Object> requestParams = AopUtils.getRequestParams(joinPoint);

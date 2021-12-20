@@ -53,6 +53,7 @@ public class VisitorSyncScheduleTask {
 		//用Set去重得到当天所有访客的uuid
 		//为避免缓存击穿导致第二天的数据统计不准确，以数据库访问日志为准，而不从Redis中获取这个Set
 		//比如在这个定时任务执行期间，产生大量访客的请求，而这些访客的uuid都在任务执行结束后被清空了，没有被第二天的定时任务记录到
+		//定时任务在每日凌晨12点执行，若在任务执行期间产生大量访问，会被清空，第二天无法记录，因此根据日志记录uv可以不遗漏
 		Set<String> uuidSet = new HashSet<>();
 		Map<String, Integer> PVMap = new HashMap<>();
 		Map<String, Date> lastTimeMap = new HashMap<>();
@@ -61,7 +62,7 @@ public class VisitorSyncScheduleTask {
 			Date createTime = log.getTime();
 			//记录当天访客的uuid
 			uuidSet.add(uuid);
-			//对应uuid的PV++
+			//对应uuid的PV++，即每个用户的pv
 			PVMap.merge(uuid, 1, Integer::sum);
 			//因为sql中order by create_time desc，直接put第一次出现的uuid的createTime，就是最后一次访问时间
 			lastTimeMap.putIfAbsent(uuid, createTime);

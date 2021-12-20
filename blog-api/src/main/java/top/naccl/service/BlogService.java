@@ -13,59 +13,83 @@ import java.util.List;
 import java.util.Map;
 
 public interface BlogService {
-	List<Blog> getListByTitleAndCategoryId(String title, Integer categoryId);
+    List<Blog> getListByTitleAndCategoryId(String title, Integer categoryId);
 
-	List<SearchBlog> getSearchBlogListByQueryAndIsPublished(String query);
+    List<SearchBlog> getSearchBlogListByQueryAndIsPublished(String query);
 
-	List<Blog> getIdAndTitleList();
+    List<Blog> getIdAndTitleList();
 
-	List<NewBlog> getNewBlogListByIsPublished();
+    List<NewBlog> getNewBlogListByIsPublished();
 
-	PageResult<BlogInfo> getBlogInfoListByIsPublished(Integer pageNum);
+    PageResult<BlogInfo> getBlogInfoListByIsPublished(Integer pageNum);
 
-	PageResult<BlogInfo> getBlogInfoListByCategoryNameAndIsPublished(String categoryName, Integer pageNum);
+    PageResult<BlogInfo> getBlogInfoListByCategoryNameAndIsPublished(String categoryName, Integer pageNum);
 
-	PageResult<BlogInfo> getBlogInfoListByTagNameAndIsPublished(String tagName, Integer pageNum);
+    PageResult<BlogInfo> getBlogInfoListByTagNameAndIsPublished(String tagName, Integer pageNum);
 
-	Map<String, Object> getArchiveBlogAndCountByIsPublished();
+    Map<String, Object> getArchiveBlogAndCountByIsPublished();
 
-	List<RandomBlog> getRandomBlogListByLimitNumAndIsPublishedAndIsRecommend();
+    List<RandomBlog> getRandomBlogListByLimitNumAndIsPublishedAndIsRecommend();
 
-	void deleteBlogById(Long id);
+    void deleteBlogById(Long id);
 
-	void deleteBlogTagByBlogId(Long blogId);
+    void deleteBlogTagByBlogId(Long blogId);
 
-	void saveBlog(top.naccl.model.dto.Blog blog);
+    void saveBlog(top.naccl.model.dto.Blog blog);
 
-	void saveBlogTag(Long blogId, Long tagId);
+    void saveBlogTag(Long blogId, Long tagId);
 
-	void updateBlogRecommendById(Long blogId, Boolean recommend);
+    void updateBlogRecommendById(Long blogId, Boolean recommend);
 
-	void updateBlogVisibilityById(Long blogId, BlogVisibility blogVisibility);
+    void updateBlogVisibilityById(Long blogId, BlogVisibility blogVisibility);
 
-	void updateBlogTopById(Long blogId, Boolean top);
+    void updateBlogTopById(Long blogId, Boolean top);
 
-	void updateViewsToRedis(Long blogId);
+    /**
+     * 根据博客id更新redis中的博客浏览量，每次加1
+     *
+     * @param blogId 博客主键id
+     */
+    void updateViewsToRedis(Long blogId);
 
-	void updateViews(Long blogId, Integer views);
+    /**
+     * 持久化博客浏览量到数据库
+     *
+     * @param blogId 博客id
+     * @param views  浏览量
+     */
+    void updateViews(Long blogId, Integer views);
 
-	Blog getBlogById(Long id);
 
-	String getTitleByBlogId(Long id);
+    /**
+     * 根据博客id获取博客
+     *
+     * @param id 博客主键id
+     * @return 博客对象
+     */
+    Blog getBlogById(Long id);
 
-	BlogDetail getBlogByIdAndIsPublished(Long id);
+    String getTitleByBlogId(Long id);
 
-	String getBlogPassword(Long blogId);
+    /**
+     * 根据博客id获取公开博客
+     *
+     * @param id 博客id
+     * @return 博客细节对象
+     */
+    BlogDetail getBlogByIdAndIsPublished(Long id);
 
-	void updateBlog(top.naccl.model.dto.Blog blog);
+    String getBlogPassword(Long blogId);
 
-	int countBlogByIsPublished();
+    void updateBlog(top.naccl.model.dto.Blog blog);
 
-	int countBlogByCategoryId(Long categoryId);
+    int countBlogByIsPublished();
 
-	int countBlogByTagId(Long tagId);
+    int countBlogByCategoryId(Long categoryId);
 
-	Boolean getCommentEnabledByBlogId(Long blogId);
+    int countBlogByTagId(Long tagId);
 
-	Boolean getPublishedByBlogId(Long blogId);
+    Boolean getCommentEnabledByBlogId(Long blogId);
+
+    Boolean getPublishedByBlogId(Long blogId);
 }

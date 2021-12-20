@@ -34,7 +34,7 @@ public class ExceptionLogAspect {
 	ExceptionLogService exceptionLogService;
 
 	/**
-	 * 配置切入点
+	 * 配置切入点，controller包中的所有类，类里面所有方法
 	 */
 	@Pointcut("execution(* top.naccl.controller..*.*(..))")
 	public void logPointcut() {

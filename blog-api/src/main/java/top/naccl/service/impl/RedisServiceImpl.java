@@ -3,6 +3,7 @@ package top.naccl.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import top.naccl.model.vo.BlogDetail;
 import top.naccl.model.vo.BlogInfo;
 import top.naccl.model.vo.PageResult;
 import top.naccl.service.RedisService;
@@ -32,6 +33,18 @@ public class RedisServiceImpl implements RedisService {
 			return null;
 		}
 	}
+
+	@Override
+	public BlogDetail getBlogDetailByHash(String hash, Long blogId) {
+		if (jsonRedisTemplate.opsForHash().hasKey(hash, blogId)) {
+			Object redisResult = jsonRedisTemplate.opsForHash().get(hash, blogId);
+			BlogDetail blogDetail = JacksonUtils.convertValue(redisResult, BlogDetail.class);
+			return blogDetail;
+		} else {
+			return null;
+		}
+	}
+
 
 	@Override
 	public void saveKVToHash(String hash, Object key, Object value) {

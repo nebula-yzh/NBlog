@@ -30,8 +30,8 @@
 		data() {
 			return {
 				loginForm: {
-					username: 'Naccl',
-					password: '11'
+					username: 'Admin',
+					password: '123456'
 				},
 				loginFormRules: {
 					username: [
