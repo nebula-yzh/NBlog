@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.naccl.config.RedisKeyConfig;
-import top.naccl.entity.Blog;
 import top.naccl.exception.NotFoundException;
 import top.naccl.exception.PersistenceException;
 import top.naccl.mapper.BlogMapper;
+import top.naccl.model.dto.Blog;
 import top.naccl.model.dto.BlogView;
 import top.naccl.model.dto.BlogVisibility;
 import top.naccl.model.vo.ArchiveBlog;
@@ -74,7 +74,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<Blog> getListByTitleAndCategoryId(String title, Integer categoryId) {
+    public List<top.naccl.entity.Blog> getListByTitleAndCategoryId(String title, Integer categoryId) {
         return blogMapper.getListByTitleAndCategoryId(title, categoryId);
     }
 
@@ -94,7 +94,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<Blog> getIdAndTitleList() {
+    public List<top.naccl.entity.Blog> getIdAndTitleList() {
         return blogMapper.getIdAndTitleList();
     }
 
@@ -278,7 +278,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Transactional
     @Override
-    public void saveBlog(top.naccl.model.dto.Blog blog) {
+    public void saveBlog(Blog blog) {
         if (blogMapper.saveBlog(blog) != 1) {
             throw new PersistenceException("添加博客失败");
         }
@@ -337,8 +337,8 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    public Blog getBlogById(Long id) {
-        Blog blog = blogMapper.getBlogById(id);
+    public top.naccl.entity.Blog getBlogById(Long id) {
+        top.naccl.entity.Blog blog = blogMapper.getBlogById(id);
         if (StringUtils.isEmpty(blog)) {
             throw new NotFoundException("博客不存在");
         }
@@ -382,7 +382,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Transactional
     @Override
-    public void updateBlog(top.naccl.model.dto.Blog blog) {
+    public void updateBlog(Blog blog) {
         if (blogMapper.updateBlog(blog) != 1) {
             throw new PersistenceException("更新博客失败");
         }

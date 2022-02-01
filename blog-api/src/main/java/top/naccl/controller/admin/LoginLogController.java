@@ -20,8 +20,12 @@ import top.naccl.service.LoginLogService;
 @RestController
 @RequestMapping("/admin")
 public class LoginLogController {
-	@Autowired
+
 	LoginLogService loginLogService;
+	@Autowired
+	public LoginLogController(LoginLogService loginLogService) {
+		this.loginLogService = loginLogService;
+	}
 
 	/**
 	 * 分页查询登录日志列表

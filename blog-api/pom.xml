@@ -147,7 +147,6 @@
             <version>2.7.0</version>
         </dependency>
 
-
         <!-- devtools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -155,6 +154,8 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+
+        <!-- 测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

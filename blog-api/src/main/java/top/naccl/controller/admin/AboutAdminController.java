@@ -20,8 +20,15 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin")
 public class AboutAdminController {
-	@Autowired
+
+	/**
+	 * 使用构造器方法注入
+	 */
 	AboutService aboutService;
+	@Autowired
+	public AboutAdminController(AboutService aboutService) {
+		this.aboutService = aboutService;
+	}
 
 	/**
 	 * 获取关于我页面配置

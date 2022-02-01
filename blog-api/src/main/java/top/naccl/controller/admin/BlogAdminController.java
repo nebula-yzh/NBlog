@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.naccl.annotation.OperationLogger;
-import top.naccl.entity.Blog;
 import top.naccl.entity.Category;
 import top.naccl.entity.Tag;
 import top.naccl.entity.User;
+import top.naccl.model.dto.Blog;
 import top.naccl.model.dto.BlogVisibility;
 import top.naccl.model.vo.Result;
 import top.naccl.service.BlogService;
@@ -41,14 +41,30 @@ import java.util.Map;
 @RestController()
 @RequestMapping("/admin")
 public class BlogAdminController {
-	@Autowired
+
+	/**
+	 * 使用set方法注入
+	 */
 	BlogService blogService;
-	@Autowired
 	CategoryService categoryService;
-	@Autowired
 	TagService tagService;
-	@Autowired
 	CommentService commentService;
+	@Autowired
+	public void setBlogService(BlogService blogService) {
+		this.blogService = blogService;
+	}
+	@Autowired
+	public void setCategoryService(CategoryService categoryService) {
+		this.categoryService = categoryService;
+	}
+	@Autowired
+	public void setTagService(TagService tagService) {
+		this.tagService = tagService;
+	}
+	@Autowired
+	public void setCommentService(CommentService commentService) {
+		this.commentService = commentService;
+	}
 
 	/**
 	 * 获取博客文章列表
@@ -66,7 +82,7 @@ public class BlogAdminController {
 	                    @RequestParam(defaultValue = "10") Integer pageSize) {
 		String orderBy = "create_time desc";
 		PageHelper.startPage(pageNum, pageSize, orderBy);
-		PageInfo<Blog> pageInfo = new PageInfo<>(blogService.getListByTitleAndCategoryId(title, categoryId));
+		PageInfo<top.naccl.entity.Blog> pageInfo = new PageInfo<>(blogService.getListByTitleAndCategoryId(title, categoryId));
 		List<Category> categories = categoryService.getCategoryList();
 		Map<String, Object> map = new HashMap<>();
 		map.put("blogs", pageInfo);
@@ -154,7 +170,7 @@ public class BlogAdminController {
 	 */
 	@GetMapping("/blog")
 	public Result getBlog(@RequestParam Long id) {
-		Blog blog = blogService.getBlogById(id);
+		top.naccl.entity.Blog blog = blogService.getBlogById(id);
 		return Result.ok("获取成功", blog);
 	}
 
@@ -166,7 +182,7 @@ public class BlogAdminController {
 	 */
 	@OperationLogger("发布博客")
 	@PostMapping("/blog")
-	public Result saveBlog(@RequestBody top.naccl.model.dto.Blog blog) {
+	public Result saveBlog(@RequestBody Blog blog) {
 		return getResult(blog, "save");
 	}
 
@@ -178,7 +194,7 @@ public class BlogAdminController {
 	 */
 	@OperationLogger("更新博客")
 	@PutMapping("/blog")
-	public Result updateBlog(@RequestBody top.naccl.model.dto.Blog blog) {
+	public Result updateBlog(@RequestBody Blog blog) {
 		return getResult(blog, "update");
 	}
 
@@ -189,7 +205,7 @@ public class BlogAdminController {
 	 * @param type 添加或更新
 	 * @return
 	 */
-	private Result getResult(top.naccl.model.dto.Blog blog, String type) {
+	private Result getResult(Blog blog, String type) {
 		//验证普通字段
 		if (StringUtils.isEmpty(blog.getTitle(), blog.getFirstPicture(), blog.getContent(), blog.getDescription())
 				|| blog.getWords() == null || blog.getWords() < 0) {

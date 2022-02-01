@@ -1,6 +1,6 @@
 package top.naccl.service;
 
-import top.naccl.entity.Blog;
+import top.naccl.model.dto.Blog;
 import top.naccl.model.dto.BlogVisibility;
 import top.naccl.model.vo.BlogDetail;
 import top.naccl.model.vo.BlogInfo;
@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface BlogService {
-    List<Blog> getListByTitleAndCategoryId(String title, Integer categoryId);
+    List<top.naccl.entity.Blog> getListByTitleAndCategoryId(String title, Integer categoryId);
 
     List<SearchBlog> getSearchBlogListByQueryAndIsPublished(String query);
 
-    List<Blog> getIdAndTitleList();
+    List<top.naccl.entity.Blog> getIdAndTitleList();
 
     List<NewBlog> getNewBlogListByIsPublished();
 
@@ -35,7 +35,7 @@ public interface BlogService {
 
     void deleteBlogTagByBlogId(Long blogId);
 
-    void saveBlog(top.naccl.model.dto.Blog blog);
+    void saveBlog(Blog blog);
 
     void saveBlogTag(Long blogId, Long tagId);
 
@@ -67,7 +67,7 @@ public interface BlogService {
      * @param id 博客主键id
      * @return 博客对象
      */
-    Blog getBlogById(Long id);
+    top.naccl.entity.Blog getBlogById(Long id);
 
     String getTitleByBlogId(Long id);
 
@@ -81,7 +81,7 @@ public interface BlogService {
 
     String getBlogPassword(Long blogId);
 
-    void updateBlog(top.naccl.model.dto.Blog blog);
+    void updateBlog(Blog blog);
 
     int countBlogByIsPublished();
 

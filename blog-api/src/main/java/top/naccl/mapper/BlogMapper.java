@@ -2,7 +2,7 @@ package top.naccl.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import top.naccl.entity.Blog;
+import top.naccl.model.dto.Blog;
 import top.naccl.model.dto.BlogView;
 import top.naccl.model.dto.BlogVisibility;
 import top.naccl.model.vo.ArchiveBlog;
@@ -23,11 +23,11 @@ import java.util.List;
 @Mapper
 @Repository
 public interface BlogMapper {
-    List<Blog> getListByTitleAndCategoryId(String title, Integer categoryId);
+    List<top.naccl.entity.Blog> getListByTitleAndCategoryId(String title, Integer categoryId);
 
     List<SearchBlog> getSearchBlogListByQueryAndIsPublished(String query);
 
-    List<Blog> getIdAndTitleList();
+    List<top.naccl.entity.Blog> getIdAndTitleList();
 
     List<NewBlog> getNewBlogListByIsPublished();
 
@@ -49,7 +49,7 @@ public interface BlogMapper {
 
     int deleteBlogTagByBlogId(Long blogId);
 
-    int saveBlog(top.naccl.model.dto.Blog blog);
+    int saveBlog(Blog blog);
 
     int saveBlogTag(Long blogId, Long tagId);
 
@@ -68,7 +68,7 @@ public interface BlogMapper {
      */
     int getBlogViewsById(Long blogId);
 
-    Blog getBlogById(Long id);
+    top.naccl.entity.Blog getBlogById(Long id);
 
     String getTitleByBlogId(Long id);
 
@@ -76,7 +76,7 @@ public interface BlogMapper {
 
     String getBlogPassword(Long blogId);
 
-    int updateBlog(top.naccl.model.dto.Blog blog);
+    int updateBlog(Blog blog);
 
     int countBlog();
 

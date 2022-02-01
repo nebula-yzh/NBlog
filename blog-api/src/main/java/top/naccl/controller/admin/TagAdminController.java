@@ -39,7 +39,8 @@ public class TagAdminController {
 	 * @return
 	 */
 	@GetMapping("/tags")
-	public Result tags(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+	public Result tags(@RequestParam(defaultValue = "1") Integer pageNum,
+					   @RequestParam(defaultValue = "10") Integer pageSize) {
 		String orderBy = "id desc";
 		PageHelper.startPage(pageNum, pageSize, orderBy);
 		PageInfo<Tag> pageInfo = new PageInfo<>(tagService.getTagList());

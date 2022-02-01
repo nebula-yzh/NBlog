@@ -26,6 +26,9 @@ import top.naccl.util.StringUtils;
 @RestController
 @RequestMapping("/admin")
 public class CategoryAdminController {
+	/**
+	 * 使用field注入
+	 */
 	@Autowired
 	BlogService blogService;
 	@Autowired

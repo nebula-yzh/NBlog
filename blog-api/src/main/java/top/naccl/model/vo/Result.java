@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @Description: 封装响应结果
+ * @Description: 封装响应结果,返回给前端
  * @Author: Naccl
  * @Date: 2020-07-19
  */
