@@ -2,6 +2,7 @@ package top.naccl.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.naccl.entity.Category;
 import top.naccl.entity.Tag;
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 
 @RestController
+@RequestMapping("/visitor")
 public class IndexController {
 	@Autowired
 	SiteSettingService siteSettingService;

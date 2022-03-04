@@ -1,10 +1,7 @@
 package top.naccl.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.naccl.annotation.VisitLogger;
 import top.naccl.model.vo.Friend;
 import top.naccl.model.vo.FriendInfo;
@@ -21,6 +18,7 @@ import java.util.Map;
  * @Date: 2020-09-08
  */
 @RestController
+@RequestMapping("/visitor")
 public class FriendController {
 	@Autowired
 	FriendService friendService;

@@ -3,6 +3,7 @@ package top.naccl.controller.user;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.naccl.annotation.VisitLogger;
 import top.naccl.model.vo.Result;
@@ -15,6 +16,7 @@ import top.naccl.service.AboutService;
  */
 @RestController
 @Api(tags = "我的信息")
+@RequestMapping("/visitor")
 public class AboutController {
 	@Autowired
 	AboutService aboutService;

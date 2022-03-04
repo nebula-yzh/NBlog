@@ -2,11 +2,7 @@ package top.naccl.controller.user;
 
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.naccl.annotation.AccessLimit;
 import top.naccl.annotation.VisitLogger;
 import top.naccl.entity.Moment;
@@ -23,6 +19,7 @@ import top.naccl.util.JwtUtils;
  * @Date: 2020-08-25
  */
 @RestController
+@RequestMapping("/visitor")
 public class MomentController {
 	@Autowired
 	MomentService momentService;

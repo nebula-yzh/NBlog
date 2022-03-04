@@ -160,7 +160,7 @@ public class BlogServiceImpl implements BlogService {
             //若redis中没有，则在数据库中进行查找，并添加到redis
             else {
                 view = blogMapper.getBlogViewsById(blogId);
-                redisService.saveKVToHash(redisKey,blogId,view);
+                redisService.saveKVToHash(redisKey, blogId, view);
             }
             blogInfo.setViews(view);
             blogInfos.set(i, blogInfo);
@@ -247,6 +247,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 获取博客浏览量
+     *
      * @return 返回所有博客id，和浏览量
      */
     private Map<Long, Integer> getBlogViewsMap() {
@@ -356,14 +357,13 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public BlogDetail getBlogByIdAndIsPublished(Long id) {
         //先查看redis缓存中有没有博客信息
-        BlogDetail blog = redisService.getBlogDetailByHash("blogDetailList",id);
-        //BlogDetail blog = blogMapper.getBlogByIdAndIsPublished(id);
+        BlogDetail blog = redisService.getBlogDetailByHash(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, id);
         if (StringUtils.isEmpty(blog)) {
             //redis中没有则从数据库中获取
             blog = blogMapper.getBlogByIdAndIsPublished(id);
             //并将博客信息添加到redis
-            redisService.saveKVToHash("blogDetailList",id,blog);
-            if (StringUtils.isEmpty(blog)){
+            redisService.saveKVToHash(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, id, blog);
+            if (StringUtils.isEmpty(blog)) {
                 throw new NotFoundException("该博客不存在");
             }
         }

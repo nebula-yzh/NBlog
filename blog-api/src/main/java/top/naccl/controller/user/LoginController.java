@@ -3,6 +3,7 @@ package top.naccl.controller.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.naccl.entity.User;
 import top.naccl.model.dto.LoginInfo;
@@ -19,6 +20,7 @@ import java.util.Map;
  * @Date: 2020-09-02
  */
 @RestController
+@RequestMapping("/visitor")
 public class LoginController {
 	@Autowired
 	UserService userService;

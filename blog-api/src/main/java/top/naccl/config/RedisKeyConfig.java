@@ -35,4 +35,9 @@ public class RedisKeyConfig {
 
 	//访客标识码key
 	public static final String IDENTIFICATION_SET = "identificationSet";
+
+	/**
+	 * 博客内容hash key
+	 */
+	public static final String BLOG_DETAIL_HASH_KEY = "blogDetailHash";
 }

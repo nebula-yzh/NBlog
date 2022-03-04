@@ -12,7 +12,7 @@ public interface RedisService {
 
 	/**
 	 * 根据hash和博客id获取redis中博客信息
-	 * @param hash 哈希值
+	 * @param hash 哈希key
 	 * @param blogId 博客id
 	 * @return 博客信息
 	 */

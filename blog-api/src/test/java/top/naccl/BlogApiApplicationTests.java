@@ -6,12 +6,4 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class BlogApiApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
-	@Test
-	void test() {
-	}
-
 }
