@@ -20,6 +20,7 @@ import top.naccl.entity.Tag;
 import top.naccl.entity.User;
 import top.naccl.model.dto.Blog;
 import top.naccl.model.dto.BlogVisibility;
+import top.naccl.model.vo.BlogDetail;
 import top.naccl.model.vo.Result;
 import top.naccl.service.*;
 import top.naccl.util.StringUtils;
@@ -268,6 +269,7 @@ public class BlogAdminController {
         if (blog.getViews() == null || blog.getViews() < 0) {
             blog.setViews(0);
         }
+        BlogDetail blogDetail;
         if ("save".equals(type)) {
             blog.setCreateTime(date);
             blog.setUpdateTime(date);
@@ -275,14 +277,14 @@ public class BlogAdminController {
             //个人博客默认只有一个作者
             user.setId((long) 1);
             blog.setUser(user);
-
             blogService.saveBlog(blog);
             //关联博客和标签(维护 blog_tag 表)
             for (Tag t : tags) {
                 blogService.saveBlogTag(blog.getId(), t.getId());
             }
+            blogDetail = new BlogDetail(blog);
             //更新缓存
-            redisService.saveKVToHash(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, blog.getId(), blog);
+            redisService.saveKVToHash(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, blog.getId(), blogDetail);
             return Result.ok("添加成功");
         } else {
             blog.setUpdateTime(date);
@@ -292,10 +294,11 @@ public class BlogAdminController {
             for (Tag t : tags) {
                 blogService.saveBlogTag(blog.getId(), t.getId());
             }
+            blogDetail = new BlogDetail(blog);
             //更新缓存
-            redisService.saveKVToHash(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, blog.getId(), blog);
+            redisService.saveKVToHash(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, blog.getId(), blogDetail);
             return Result.ok("更新成功");
         }
-
     }
+
 }
