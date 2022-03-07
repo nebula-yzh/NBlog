@@ -59,7 +59,7 @@ public class MomentController {
 
 	/**
 	 * 给动态点赞
-	 * 简单限制一下点赞
+	 * 简单限制一下点赞24小时只能点一次
 	 *
 	 * @param id 动态id
 	 * @return
