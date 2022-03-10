@@ -269,7 +269,6 @@ public class BlogAdminController {
         if (blog.getViews() == null || blog.getViews() < 0) {
             blog.setViews(0);
         }
-        BlogDetail blogDetail;
         if ("save".equals(type)) {
             blog.setCreateTime(date);
             blog.setUpdateTime(date);
@@ -282,9 +281,8 @@ public class BlogAdminController {
             for (Tag t : tags) {
                 blogService.saveBlogTag(blog.getId(), t.getId());
             }
-            blogDetail = new BlogDetail(blog);
-            //更新缓存
-            redisService.saveKVToHash(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, blog.getId(), blogDetail);
+            //删除缓存
+            redisService.deleteByHashKey(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, blog.getId());
             return Result.ok("添加成功");
         } else {
             blog.setUpdateTime(date);
@@ -294,9 +292,8 @@ public class BlogAdminController {
             for (Tag t : tags) {
                 blogService.saveBlogTag(blog.getId(), t.getId());
             }
-            blogDetail = new BlogDetail(blog);
-            //更新缓存
-            redisService.saveKVToHash(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, blog.getId(), blogDetail);
+            //删除缓存
+            redisService.deleteByHashKey(RedisKeyConfig.BLOG_DETAIL_HASH_KEY, blog.getId());
             return Result.ok("更新成功");
         }
     }
