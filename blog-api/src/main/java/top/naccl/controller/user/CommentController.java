@@ -79,7 +79,7 @@ public class CommentController {
 	 * @param page     页面分类（0普通文章，1关于我...）
 	 * @param blogId   如果page==0，需要博客id参数
 	 * @param pageNum  页码
-	 * @param pageSize 每页个数
+	 * @param pageSize 每页根评论个数
 	 * @param jwt      若文章受密码保护，需要获取访问Token
 	 * @return
 	 */
