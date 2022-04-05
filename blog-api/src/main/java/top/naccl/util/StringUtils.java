@@ -24,6 +24,39 @@ public class StringUtils {
 		return false;
 	}
 
+	public static boolean isBlank(String string) {
+		if (string != null && string.length() != 0) {
+			int l = string.length();
+
+			for(int i = 0; i < l; ++i) {
+				if (!isWhitespace(string.codePointAt(i))) {
+					return false;
+				}
+			}
+
+			return true;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * 判断字符串是否正常
+	 *
+	 * @param str
+	 * @return
+	 */
+	public static boolean isFine(final String str) {
+		try {
+			return !(str == null || str.trim().length() == 0);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static boolean isWhitespace(int c) {
+		return c == 32 || c == 9 || c == 10 || c == 12 || c == 13;
+	}
 	/**
 	 * 判断字符串中是否包含特殊字符
 	 *

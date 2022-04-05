@@ -44,8 +44,8 @@ public class CommentController {
     UserServiceImpl userService;
     @Autowired
     FriendService friendService;
-    @Autowired
-    MailProperties mailProperties;
+    //@Autowired
+    //MailProperties mailProperties;
     @Autowired
     MailUtils mailUtils;
     @Autowired
@@ -121,11 +121,11 @@ public class CommentController {
         long start = (long) pageSize * (pageNum - 1);
         long end = start + pageSize - 1;
         List<PageComment> rootComments;
-        if (count > 0) {
+        if (count > start) {
             //查缓存
             Set<String> rangeFromZSet = redisService.getRangeFromZSet(blogRootCommentKey, true, start, end);
             rootComments = rangeFromZSet.stream().map(v ->
-                    JacksonUtils.convertValue(v, PageComment.class))
+                    JacksonUtils.readValue(v, PageComment.class))
                     .collect(Collectors.toList());
         } else {
             //缓存不存在，查数据库
@@ -157,7 +157,8 @@ public class CommentController {
         List<ZSetOperations.TypedTuple<String>> tupleList = new ArrayList<>();
         pageCommentList.forEach(pageComment -> {
             ZSetOperations.TypedTuple<String> tuple = new DefaultTypedTuple<>(JacksonUtils.writeValueAsString(pageComment),
-                    Double.parseDouble(pageComment.getCreateTime().toString()));
+                    (double) pageComment.getCreateTime().getTime());
+
             tupleList.add(tuple);
         });
         return tupleList;
@@ -212,7 +213,7 @@ public class CommentController {
     @PostMapping("/comment")
     public Result postComment(@RequestBody Comment comment,
                               HttpServletRequest request,
-                              @RequestHeader(value = "Authorization", defaultValue = "") String jwt) {
+                              @RequestHeader(value = "Authorization", defaultValue = "") String jwt) throws InterruptedException {
         //评论内容合法性校验
         if (StringUtils.isEmpty(comment.getContent()) || comment.getContent().length() > 250 ||
                 comment.getPage() == null || comment.getParentCommentId() == null) {
@@ -417,7 +418,7 @@ public class CommentController {
             //访客以父评论提交，只邮件提醒我自己(4)
             //访客回复我的评论，邮件提醒我自己(5)
             //访客回复访客的评论，不管对方是否接收提醒，都要提醒我有新评论(6)
-            sendMailToMe(comment);
+            //sendMailToMe(comment);
         }
     }
 
@@ -456,39 +457,39 @@ public class CommentController {
         mailUtils.sendHtmlTemplateMail(map, toAccount, subject, "guest.html");
     }
 
-    /**
-     * 发送邮件提醒我自己
-     *
-     * @param comment 当前评论
-     */
-    private void sendMailToMe(Comment comment) {
-        String path = "";
-        String title = "";
-        if (comment.getPage() == 0) {
-            //普通博客
-            title = blogService.getTitleByBlogId(comment.getBlogId());
-            path = "/blog/" + comment.getBlogId();
-        } else if (comment.getPage() == 1) {
-            //关于我页面
-            title = "关于我";
-            path = "/about";
-        } else if (comment.getPage() == 2) {
-            //友链页面
-            title = "友人帐";
-            path = "/friends";
-        }
-        Map<String, Object> map = new HashMap<>();
-        map.put("title", title);
-        map.put("time", comment.getCreateTime());
-        map.put("nickname", comment.getNickname());
-        map.put("content", comment.getContent());
-        map.put("ip", comment.getIp());
-        map.put("email", comment.getEmail());
-        map.put("status", comment.getPublished() ? "公开" : "待审核");
-        map.put("url", websiteUrl + path);
-        map.put("manageUrl", cmsUrl + "/comments");
-        String toAccount = mailProperties.getUsername();
-        String subject = blogName + " 收到新评论";
-        mailUtils.sendHtmlTemplateMail(map, toAccount, subject, "owner.html");
-    }
+    ///**
+    // * 发送邮件提醒我自己
+    // *
+    // * @param comment 当前评论
+    // */
+    //private void sendMailToMe(Comment comment) {
+    //    String path = "";
+    //    String title = "";
+    //    if (comment.getPage() == 0) {
+    //        //普通博客
+    //        title = blogService.getTitleByBlogId(comment.getBlogId());
+    //        path = "/blog/" + comment.getBlogId();
+    //    } else if (comment.getPage() == 1) {
+    //        //关于我页面
+    //        title = "关于我";
+    //        path = "/about";
+    //    } else if (comment.getPage() == 2) {
+    //        //友链页面
+    //        title = "友人帐";
+    //        path = "/friends";
+    //    }
+    //    Map<String, Object> map = new HashMap<>();
+    //    map.put("title", title);
+    //    map.put("time", comment.getCreateTime());
+    //    map.put("nickname", comment.getNickname());
+    //    map.put("content", comment.getContent());
+    //    map.put("ip", comment.getIp());
+    //    map.put("email", comment.getEmail());
+    //    map.put("status", comment.getPublished() ? "公开" : "待审核");
+    //    map.put("url", websiteUrl + path);
+    //    map.put("manageUrl", cmsUrl + "/comments");
+    //    String toAccount = mailProperties.getUsername();
+    //    String subject = blogName + " 收到新评论";
+    //    mailUtils.sendHtmlTemplateMail(map, toAccount, subject, "owner.html");
+    //}
 }
