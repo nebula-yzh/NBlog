@@ -118,7 +118,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int countByPageAndIsPublished(Integer page, Long blogId) {
+	public Long countByPageAndIsPublished(Integer page, Long blogId) {
 		return commentMapper.countByPageAndIsPublished(page, blogId);
 	}
 
