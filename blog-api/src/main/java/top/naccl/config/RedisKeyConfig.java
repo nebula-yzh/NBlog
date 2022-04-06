@@ -60,4 +60,8 @@ public class RedisKeyConfig {
         return "BlogComment:" + blogId + ":" + parentCommentId;
     }
 
+    public static String getBlogRootCommentCount(Long blogId){
+        return "BlogCommentCount:" + blogId;
+    }
+
 }

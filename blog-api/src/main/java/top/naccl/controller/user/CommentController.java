@@ -116,31 +116,46 @@ public class CommentController {
             }
         }
         String blogRootCommentKey = RedisKeyConfig.getBlogRootCommentZSetKey(blogId);
-        Long count = redisService.countZSet(blogRootCommentKey);
+        String blogRootCommentCount = RedisKeyConfig.getBlogRootCommentCount(blogId);
+        //根评论条数
+        Long count = redisService.getObjectByValue(blogRootCommentCount, Long.class);
         count = count == null ? 0L : count;
+
+        boolean hasKey = redisService.hasKey(blogRootCommentKey);
+
         long start = (long) pageSize * (pageNum - 1);
         long end = start + pageSize - 1;
-        List<PageComment> rootComments;
-        if (count > start) {
+        List<PageComment> rootComments = new ArrayList<>();
+        //zset中是否有那么多评论
+        Long hasCommentCnt = redisService.countZSet(blogRootCommentKey);
+        hasCommentCnt = hasCommentCnt == null ? 0L : hasCommentCnt;
+        //判断当前缓存中根评论个数是否足够翻页
+        //会出现一个问题，就是若是只缓存了5条，每次都是先访问第一页，因此会导致缓存中一直有5条数据
+        //无法出现翻页按钮
+        if (hasKey && count > start && hasCommentCnt > start) {
             //查缓存
             Set<String> rangeFromZSet = redisService.getRangeFromZSet(blogRootCommentKey, true, start, end);
             rootComments = rangeFromZSet.stream().map(v ->
                     JacksonUtils.readValue(v, PageComment.class))
                     .collect(Collectors.toList());
         } else {
-            //缓存不存在，查数据库
+            //缓存不存在，查数据库,根评论数量
             count = commentService.countByPageAndIsPublished(page, blogId);
-            PageHelper.startPage(pageNum, pageSize);
-            rootComments = commentService.getPageCommentList(page, blogId, (long) -1);
-            //进行转换
-            List<ZSetOperations.TypedTuple<String>> tupleList = transferToZSetTypedTupleList(rootComments);
-            HashSet<ZSetOperations.TypedTuple<String>> typedTuples = new HashSet<>(tupleList);
-            //写入缓存
-            redisService.saveValuesToZSet(blogRootCommentKey, typedTuples);
+            if (count != 0) {
+                //缓存数量
+                redisService.saveObjectToValue(blogRootCommentCount, count);
+                PageHelper.startPage(pageNum, pageSize);
+                rootComments = commentService.getPageCommentList(page, blogId, (long) -1);
+                //进行转换
+                List<ZSetOperations.TypedTuple<String>> tupleList = transferToZSetTypedTupleList(rootComments);
+                HashSet<ZSetOperations.TypedTuple<String>> typedTuples = new HashSet<>(tupleList);
+                //写入缓存
+                redisService.saveValuesToZSet(blogRootCommentKey, typedTuples);
+            }
         }
-        PageInfo<PageComment> pageInfo = new PageInfo<>(rootComments);
-        PageResult<PageComment> pageResult = new PageResult<>(pageInfo.getPages(), pageInfo.getList());
-        Map<String, Object> map = new HashMap<>();
+        Integer pages = Math.toIntExact(count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+        PageResult<PageComment> pageResult = new PageResult<>(pages, rootComments);
+        Map<String, Object> map = new HashMap<>(4);
         map.put("count", count);
         map.put("comments", pageResult);
         return Result.ok("获取成功", map);
@@ -320,7 +335,9 @@ public class CommentController {
         //先删除缓存,每次更新一条评论，就会删除当篇所有评论的缓存
         //可优化否？能不能单独删除更新的评论 TODO
         String blogRootCommentKey = RedisKeyConfig.getBlogRootCommentZSetKey(comment.getBlogId());
+        String blogRootCommentCount = RedisKeyConfig.getBlogRootCommentCount(comment.getBlogId());
         redisService.deleteCacheByKey(blogRootCommentKey);
+        redisService.deleteCacheByKey(blogRootCommentCount);
         commentService.saveComment(comment);
         judgeSendMail(comment, isVisitorComment, parentComment);
         return Result.ok("评论成功");

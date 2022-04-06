@@ -159,6 +159,7 @@
         <if test="page==0 and blogId!=0">
             and blog_id=#{blogId}
         </if>
+        and parent_comment_id = -1
     </select>
 
     <!--查询所有评论数量-->

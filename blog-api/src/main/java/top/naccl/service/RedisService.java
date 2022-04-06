@@ -62,7 +62,7 @@ public interface RedisService {
 
     <T> void saveMapToValue(String key, Map<String, T> map);
 
-    <T> T getObjectByValue(String key, Class t);
+    <T> T getObjectByValue(String key, Class<T> t);
 
     void incrementByKey(String key, int increment);
 

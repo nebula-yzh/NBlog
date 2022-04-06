@@ -3,7 +3,6 @@ package top.naccl.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import top.naccl.model.vo.BlogDetail;
 import top.naccl.model.vo.BlogInfo;
@@ -105,10 +104,9 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public <T> T getObjectByValue(String key, Class t) {
+    public <T> T getObjectByValue(String key, Class<T> t) {
         Object redisResult = jsonRedisTemplate.opsForValue().get(key);
-        T object = (T) JacksonUtils.convertValue(redisResult, t);
-        return object;
+        return JacksonUtils.convertValue(redisResult, t);
     }
 
     @Override
