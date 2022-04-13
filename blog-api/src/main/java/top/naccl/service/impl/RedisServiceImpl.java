@@ -123,6 +123,12 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    public void saveObjectToValueWithExpireTime(String key, Object object, long expireTime, TimeUnit timeUnit) {
+        jsonRedisTemplate.opsForValue().set(key, object, expireTime, timeUnit);
+    }
+
+
+    @Override
     public void saveValueToSet(String key, Object value) {
         jsonRedisTemplate.opsForSet().add(key, value);
     }
@@ -188,5 +194,10 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public void expire(String key, long time) {
         jsonRedisTemplate.expire(key, time, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void expire(String key, long time, TimeUnit timeUnit) {
+        jsonRedisTemplate.expire(key, time, timeUnit);
     }
 }

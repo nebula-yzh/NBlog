@@ -8,6 +8,7 @@ import top.naccl.model.vo.PageResult;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public interface RedisService {
     PageResult<BlogInfo> getBlogInfoPageResultByHash(String hash, Integer pageNum);
@@ -67,6 +68,16 @@ public interface RedisService {
     void incrementByKey(String key, int increment);
 
     void saveObjectToValue(String key, Object object);
+
+    /**
+     * 带过期时间
+     *
+     * @param key
+     * @param object
+     * @param expireTime 过期时间
+     * @param timeUnit   过期单位
+     */
+    void saveObjectToValueWithExpireTime(String key, Object object, long expireTime, TimeUnit timeUnit);
 
     void saveValueToSet(String key, Object value);
 
@@ -128,4 +139,6 @@ public interface RedisService {
     boolean hasKey(String key);
 
     void expire(String key, long time);
+
+    void expire(String key, long time, TimeUnit timeUnit);
 }

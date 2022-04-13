@@ -23,6 +23,7 @@ import top.naccl.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -143,7 +144,7 @@ public class CommentController {
             count = commentService.countByPageAndIsPublished(page, blogId);
             if (count != 0) {
                 //缓存数量
-                redisService.saveObjectToValue(blogRootCommentCount, count);
+                redisService.saveObjectToValueWithExpireTime(blogRootCommentCount, count, 1, TimeUnit.HOURS);
                 PageHelper.startPage(pageNum, pageSize);
                 rootComments = commentService.getPageCommentList(page, blogId, (long) -1);
                 //进行转换
@@ -151,6 +152,7 @@ public class CommentController {
                 HashSet<ZSetOperations.TypedTuple<String>> typedTuples = new HashSet<>(tupleList);
                 //写入缓存
                 redisService.saveValuesToZSet(blogRootCommentKey, typedTuples);
+                redisService.expire(blogRootCommentKey, 1, TimeUnit.HOURS);
             }
         }
         Integer pages = Math.toIntExact(count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
